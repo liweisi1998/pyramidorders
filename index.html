@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挂单计算器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="display-area">
+            <div id="order-summary"></div>
+            <div id="order-bars"></div>
+        </div>
+        <div class="input-area">
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="pyramid">正金字塔挂单</button>
+                <button class="mode-btn" data-mode="reverse-pyramid">倒金字塔挂单</button>
+            </div>
+
+            <div class="input-grid">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="current-price">当前价格</label>
+                        <input type="number" id="current-price" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="investment-amount">投入金额</label>
+                        <input type="number" id="investment-amount" step="0.01">
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="price-input">最低接货价格</label>
+                        <div class="price-input-group">
+                            <input type="number" id="price-input" step="0.01">
+                            <button class="random-btn" data-target="price-input">🎲</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="order-quantity">挂单数量</label>
+                        <input type="number" 
+                               id="order-quantity" 
+                               value="5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group multiplier-group">
+                <div class="slider-header">
+                    <label>投入倍数</label>
+                    <span id="multiplier-value">0.00</span>
+                </div>
+                <div class="slider-track">
+                    <div class="slider-progress"></div>
+                    <div class="slider-thumb" id="slider-thumb"></div>
+                </div>
+            </div>
+            
+            <button id="calculate-button">计算</button>
+        </div>
+    </div>
+    <button class="back-to-top" title="回到顶部">⬆️</button>
+    <script src="script.js"></script>
+</body>
+</html>

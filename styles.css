@@ -1,0 +1,407 @@
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    padding: 20px;
+}
+
+/* 容器布局 */
+.container {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 输入区域样式 */
+.input-area {
+    width: 30%;  /* 设置为页面的30% */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 显示区域样式 */
+.display-area {
+    flex: 1;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* 输入组样式 */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+/* 输入框样式 */
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 计算按钮样式 */
+#calculate-button {
+    width: 100%;  /* 与输入框同宽 */
+    padding: 8px;
+    background-color: #4B89F5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#calculate-button:hover {
+    background-color: #3b7de8;
+}
+
+/* 滑块相关样式保持不变 */
+.slider-track {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: #E8E8E8;
+    cursor: pointer;
+}
+
+.slider-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #4B89F5;
+}
+
+.slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: #4B89F5;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    user-select: none;
+}
+
+.slider-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#multiplier-value {
+    color: #4B89F5;
+    font-family: monospace;
+}
+
+/* 结果显示区域样式 */
+.display-area {
+    flex: 1;
+    padding: 20px;
+}
+
+/* 订单条目布局 */
+.order-item {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    padding: 8px;
+    background: white;
+    border-radius: 4px;
+}
+
+/* 订单信息样式 */
+.order-info {
+    display: flex;
+    align-items: center;
+    min-width: 200px;
+    gap: 12px;
+}
+
+.price-value {
+    min-width: 100px;
+    text-align: left;
+    padding-left: 4px;
+}
+
+.drop-percentage {
+    min-width: 80px;
+    padding: 2px 8px;
+    background: #ff4d4f;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* 柱状图容器 */
+.order-bar-container {
+    flex: 1;
+    margin-left: 12px;
+}
+
+/* 柱状图样式 */
+.order-bar {
+    height: 24px;
+    background: #4B89F5;
+    color: black;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 14px;
+    width: 100%;  /* 确保整个区域可点击 */
+}
+
+/* 添加汇总信息样式 */
+.orders-summary {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.summary-item {
+    font-size: 14px;
+    color: #333;
+}
+
+.summary-item span {
+    color: #4B89F5;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+/* 添加新的样式 */
+.mode-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #4B89F5;
+    background: white;
+    color: #4B89F5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.mode-btn.active {
+    background: #4B89F5;
+    color: white;
+}
+
+.price-input-group {
+    display: flex;
+    align-items: stretch; /* 确保按钮和输入框等高 */
+}
+
+.random-btn {
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    padding: 0 8px;
+    font-size: 16px;
+    border-radius: 0 4px 4px 0;
+    margin-left: -1px; /* 与输入框边框重叠 */
+}
+
+.random-btn:hover {
+    background: #f5f5f5;
+}
+
+/* 调整输入框样式 */
+.price-input-group input[type="number"] {
+    border-radius: 4px 0 0 4px;
+}
+
+/* 涨跌幅显示 - 分为红色和绿色两种状态 */
+.percentage-down {
+    min-width: 80px;
+    padding: 4px 8px;  /* 调整内边距使高度与蓝条一致 */
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+    height: 24px;     /* 与蓝条保持一致的高度 */
+    line-height: 16px; /* 文字垂直居中 */
+    display: flex;     /* 使用flex布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    background: #ff4d4f;  /* 红色 - 用于下跌 */
+    color: white;
+}
+
+.percentage-up {
+    min-width: 80px;
+    padding: 4px 8px;  /* 调整内边距使高度与蓝条一致 */
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+    height: 24px;     /* 与蓝条保持一致的高度 */
+    line-height: 16px; /* 文字垂直居中 */
+    display: flex;     /* 使用flex布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    background: #52c41a;  /* 绿色 - 用于上涨 */
+    color: white;
+}
+
+/* 调整倍数选择器的间距 */
+.multiplier-group {
+    margin-top: 16px;
+}
+
+/* 回到顶部按钮样式优化 */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: transparent; /* 移除背景色 */
+    width: 32px;  /* 增加点击区域 */
+    height: 32px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;    /* 移除边框 */
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2)); /* 给emoji添加阴影 */
+    transition: all 0.3s;
+    z-index: 1000;
+    font-size: 28px; /* 放大 Emoji */
+    padding: 0;
+    line-height: 1;
+}
+
+.back-to-top:hover {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25)); /* 悬停时加深阴影 */
+    transform: translateY(-2px);
+}
+
+/* 响应式布局调整 */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column-reverse;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .input-area {
+        width: 100%;
+    }
+
+    .input-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 10px 0;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 12px;  /* 两个输入框之间的间距 */
+    }
+
+    .input-row .input-group {
+        flex: 1;    /* 每个输入组占据相等空间 */
+        margin: 0;  /* 移除默认外边距 */
+    }
+
+    .input-group label {
+        font-size: 12px;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 6px;
+    }
+
+    /* 价格输入组（带骰子按钮的） */
+    .price-input-group {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .price-input-group input {
+        flex: 1;
+        border-radius: 4px 0 0 4px;
+    }
+
+    .random-btn {
+        border-radius: 0 4px 4px 0;
+        padding: 0 8px;
+        margin-left: -1px;
+    }
+
+    /* 滑块组样式调整 */
+    .multiplier-group {
+        margin-top: 12px;
+    }
+
+    /* 计算按钮样式 */
+    #calculate-button {
+        margin-top: 12px;
+        width: 100%;
+    }
+}
+
+/* 添加可点击的视觉提示 */
+.price-value,
+.order-bar {
+    cursor: pointer;
+    user-select: none;  /* 防止文本被选中 */
+}
+
+.price-value:hover,
+.order-bar:hover {
+    opacity: 0.8;
+}
+
+/* 确保整个数字区域可点击 */
+.order-info,
+.order-bar-container {
+    display: flex;
+    align-items: center;
+}
+
+/* 平均价格线样式 */
+.average-price-line {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    padding: 0 8px;
+    height: 24px;
+    position: relative;
+}
+
+.average-price-line .line {
+    flex: 1;
+    height: 1px;
+    background: #ff9900;
+}
+
+.average-price-line .price {
+    color: #ff9900;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 12px;
+}
