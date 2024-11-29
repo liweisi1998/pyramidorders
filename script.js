@@ -7,8 +7,8 @@ class Slider {
         this.valueDisplay = document.getElementById('multiplier-value');
         
         this.min = 0;
-        this.max = 1;
-        this.step = 0.1;
+        this.max = 2;
+        this.step = 0.05;
         
         this.isDragging = false;
         
@@ -16,22 +16,60 @@ class Slider {
     }
 
     init() {
+        // 绑定 this
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
+        this.onTouchMove = this.onTouchMove.bind(this);
+        this.onTouchEnd = this.onTouchEnd.bind(this);
         
+        // 鼠标事件
         this.thumb.addEventListener('mousedown', (e) => {
             this.isDragging = true;
             document.addEventListener('mousemove', this.onMouseMove);
             document.addEventListener('mouseup', this.onMouseUp);
         });
         
+        // 触摸事件
+        this.thumb.addEventListener('touchstart', (e) => {
+            this.isDragging = true;
+            document.addEventListener('touchmove', this.onTouchMove);
+            document.addEventListener('touchend', this.onTouchEnd);
+            // 防止页面滚动
+            e.preventDefault();
+        }, { passive: false });
+        
+        // 点击轨道
         this.track.addEventListener('click', (e) => {
             if (e.target === this.thumb) return;
             const value = this.calculateValue(e.clientX);
             this.updateDisplay(value);
         });
         
+        // 触摸轨道
+        this.track.addEventListener('touchstart', (e) => {
+            if (e.target === this.thumb) return;
+            const touch = e.touches[0];
+            const value = this.calculateValue(touch.clientX);
+            this.updateDisplay(value);
+            e.preventDefault();
+        }, { passive: false });
+        
         this.updateDisplay(0);
+    }
+
+    onTouchMove(e) {
+        if (!this.isDragging) return;
+        const touch = e.touches[0];
+        const value = this.calculateValue(touch.clientX);
+        this.updateDisplay(value);
+        // 防止页面滚动
+        e.preventDefault();
+    }
+
+    onTouchEnd() {
+        this.isDragging = false;
+        document.removeEventListener('touchmove', this.onTouchMove);
+        document.removeEventListener('touchend', this.onTouchEnd);
     }
 
     onMouseMove(e) {
@@ -123,14 +161,21 @@ function addCopyFeature() {
         const priceElement = e.target.closest('.price-value');
         const amountElement = e.target.closest('.order-bar');
         
+        let clickedElement = null;
         let textToCopy = '';
+
         if (priceElement) {
+            clickedElement = priceElement;
             textToCopy = priceElement.textContent.trim();
         } else if (amountElement) {
+            clickedElement = amountElement;
             textToCopy = amountElement.textContent.trim();
         }
 
         if (textToCopy) {
+            // 添加点击状态样式
+            clickedElement.classList.add('clicked');
+            
             navigator.clipboard.writeText(textToCopy).then(() => {
                 showTooltip(textToCopy);
             });

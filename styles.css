@@ -69,9 +69,11 @@ input[type="number"] {
 .slider-track {
     position: relative;
     width: 100%;
-    height: 2px;
-    background: #E8E8E8;
+    height: 4px;
+    background: #e1e1e1;
+    border-radius: 2px;
     cursor: pointer;
+    touch-action: none;
 }
 
 .slider-progress {
@@ -85,13 +87,14 @@ input[type="number"] {
 .slider-thumb {
     position: absolute;
     top: 50%;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     background: #4B89F5;
     border-radius: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     cursor: pointer;
     user-select: none;
+    touch-action: none;
 }
 
 .slider-header {
@@ -404,4 +407,13 @@ input[type="number"] {
     font-size: 14px;
     font-weight: 500;
     margin-left: 12px;
+}
+
+/* 添加点击状态的样式 */
+.price-value.clicked,
+.order-bar.clicked {
+    border: 1px solid #666;  /* 深灰色边框 */
+    color: rgba(0, 0, 0, 0.45);  /* 淡化文字 */
+    border-radius: 4px;
+    padding: 2px 6px;
 }
