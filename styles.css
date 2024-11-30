@@ -6,15 +6,17 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    padding: 20px;
+    padding: 2px;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* 容器布局 */
 .container {
     display: flex;
-    gap: 20px;
-    max-width: 1200px;
+    gap: 6px;
+    max-width: 100%;
+    overflow-x: hidden;
     margin: 0 auto;
 }
 
@@ -23,7 +25,10 @@ body {
     width: 30%;  /* 设置为页面的30% */
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 2px;
+    background: white;
+    padding: 2px;
+    border-radius: 8px;
 }
 
 /* 显示区域样式 */
@@ -36,14 +41,14 @@ body {
 
 /* 输入组样式 */
 .input-group {
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    width: 100%;
 }
 
 /* 输入框样式 */
-input[type="number"] {
+.input-group input[type="number"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -68,7 +73,7 @@ input[type="number"] {
 /* 滑块相关样式保持不变 */
 .slider-track {
     position: relative;
-    width: 100%;
+    width: 90%;
     height: 4px;
     background: #e1e1e1;
     border-radius: 2px;
@@ -87,20 +92,24 @@ input[type="number"] {
 .slider-thumb {
     position: absolute;
     top: 50%;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background: #4B89F5;
     border-radius: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     user-select: none;
     touch-action: none;
+    margin-left: -14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .slider-header {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin: 0;  /* 移除所有外边距 */
+    padding: 0;  /* 移除所有内边距 */
 }
 
 #multiplier-value {
@@ -118,53 +127,75 @@ input[type="number"] {
 .order-item {
     display: flex;
     align-items: center;
-    margin: 4px 0;
-    padding: 8px;
+    margin: 2px 0;
+    padding: 6px;
     background: white;
     border-radius: 4px;
+    overflow: hidden;  /* 防止内容溢出 */
 }
 
-/* 订单信息样式 */
+/* 订单信息容器 */
 .order-info {
     display: flex;
     align-items: center;
-    min-width: 200px;
-    gap: 12px;
+    gap: 2px;  /* 减小到2px */
+    flex-shrink: 0;
 }
 
+/* 价格值 */
 .price-value {
-    min-width: 100px;
-    text-align: left;
-    padding-left: 4px;
+    width: fit-content;  /* 根据内容自适应宽度 */
+    min-width: 85px;    /* 设置最小宽度确保数字显示完整 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;  /* 添加统一大小 */
 }
 
-.drop-percentage {
-    min-width: 80px;
-    padding: 2px 8px;
-    background: #ff4d4f;
-    color: white;
+/* 涨跌幅显示 */
+.percentage-up,
+.percentage-down {
+    min-width: 62px;  /* 调整宽度以适应 "+1500.00%" */
+    text-align: center;
+    padding: 4px 6px;  /* 减小内边距 */
     border-radius: 4px;
     font-size: 12px;
-    text-align: center;
+    height: 24px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
 }
 
 /* 柱状图容器 */
 .order-bar-container {
     flex: 1;
-    margin-left: 12px;
+    min-width: 0;
+    margin-left: 8px;
+    position: relative;  /* 为绝对定位的数字提供参考 */
+    cursor: pointer;  /* 添加手型光标 */
 }
 
 /* 柱状图样式 */
 .order-bar {
     height: 24px;
     background: #4B89F5;
-    color: black;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    font-size: 14px;
-    width: 100%;  /* 确保整个区域可点击 */
+    min-width: 30px;  /* 确保非常小的数值时也有最小宽度 */
+}
+
+/* 数字显示 */
+.amount-display {
+    position: absolute;
+    left: 10px;  /* 与资金条保持一定距离 */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;  /* 修改为统一大小 */
+    color: black;
+    white-space: nowrap;
+    z-index: 1;  /* 确保数字始终上层 */
+    pointer-events: none;  /* 确保不会干扰点击事件 */
 }
 
 /* 添加汇总信息样式 */
@@ -179,7 +210,7 @@ input[type="number"] {
 }
 
 .summary-item {
-    font-size: 14px;
+    font-size: 14px;  /* 修改为统一大小 */
     color: #333;
 }
 
@@ -238,7 +269,8 @@ input[type="number"] {
 
 /* 涨跌幅显示 - 分为红色和绿色两种状态 */
 .percentage-down {
-    min-width: 80px;
+    min-width: 70px;  /* 调整最小宽度 */
+    white-space: nowrap;
     padding: 4px 8px;  /* 调整内边距使高度与蓝条一致 */
     border-radius: 4px;
     font-size: 12px;
@@ -253,7 +285,8 @@ input[type="number"] {
 }
 
 .percentage-up {
-    min-width: 80px;
+    min-width: 70px;  /* 调整最小宽度 */
+    white-space: nowrap;
     padding: 4px 8px;  /* 调整内边距使高度与蓝条一致 */
     border-radius: 4px;
     font-size: 12px;
@@ -269,7 +302,99 @@ input[type="number"] {
 
 /* 调整倍数选择器的间距 */
 .multiplier-group {
-    margin-top: 16px;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;  /* 使用flex布局 */
+    align-items: center;  /* 垂直居中 */
+    justify-content: center;  /* 水平居中 */
+    gap: 12px;  /* 元素间距 */
+}
+
+/* 滑块头部（包含标签和数值） */
+.slider-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;  /* 移除所有外边距 */
+    padding: 0;  /* 移除所有内边距 */
+}
+
+/* 滑块标签样式 */
+.slider-header label {
+    margin: 0;  /* 移除标签的外边距 */
+    padding: 0;  /* 移除标签的内边距 */
+    line-height: 1;  /* 设置行高为1，移除额外的行间距 */
+}
+
+/* 数值显示样式 */
+.slider-header #multiplier-value {
+    margin: 0;  /* 移除数值的外边距 */
+    padding: 0;  /* 移除数值的内边距 */
+    line-height: 1;  /* 设置行高为1，移除额外的行间距 */
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .slider-header {
+        flex-shrink: 0;  /* 防止标题被缩 */
+        margin: 0;  /* 确保在移动端也没有外边距 */
+    }
+}
+
+/* 滑动条包装容器 */
+.slider-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+/* 滑动轨道 */
+.slider-track {
+    width: 90%;
+    height: 4px;
+    background: #e1e1e1;
+    border-radius: 2px;
+    position: relative;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .multiplier-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;  /* 水平居中 */
+        gap: 20px;  /* 增加间距 */
+        padding: 12px;
+    }
+
+    .slider-header {
+        flex-shrink: 0;
+        min-width: 70px;  /* 确保文字不会换行 */
+        text-align: right;  /* 文字右对齐 */
+    }
+
+    .slider-wrapper {
+        flex: 0 1 auto;  /* 不要占据所有剩余空间 */
+        width: 60%;      /* 设置合适的宽度 */
+    }
+
+    .slider-track {
+        width: 100%;
+    }
+
+    .slider-header #multiplier-value {
+        display: none;  /* 隐藏数值显示 */
+    }
+}
+
+/* 更小屏幕的适配 */
+@media screen and (max-width: 480px) {
+    .slider-wrapper {
+        width: 50%;  /* 更小屏幕下稍缩短滑动条 */
+    }
 }
 
 /* 回到顶部按钮样式优化 */
@@ -303,7 +428,7 @@ input[type="number"] {
     .container {
         flex-direction: column-reverse;
         gap: 10px;
-        padding: 10px;
+        padding: 4px;
     }
 
     .input-area {
@@ -314,7 +439,7 @@ input[type="number"] {
         display: flex;
         flex-direction: column;
         gap: 8px;
-        margin: 10px 0;
+        /* margin: 10px 0; */
     }
 
     .input-row {
@@ -357,13 +482,24 @@ input[type="number"] {
 
     /* 滑块组样式调整 */
     .multiplier-group {
-        margin-top: 12px;
+        padding: 8px;
+        margin: 8px 0;
     }
 
     /* 计算按钮样式 */
     #calculate-button {
         margin-top: 12px;
         width: 100%;
+    }
+
+    .slider-track {
+        margin: 10px 0;
+    }
+
+    .slider-thumb {
+        width: 20px;
+        height: 20px;
+        margin-left: -10px;
     }
 }
 
@@ -404,7 +540,7 @@ input[type="number"] {
 
 .average-price-line .price {
     color: #ff9900;
-    font-size: 14px;
+    font-size: 14px;  /* 修改为统一大小 */
     font-weight: 500;
     margin-left: 12px;
 }
@@ -417,3 +553,678 @@ input[type="number"] {
     border-radius: 4px;
     padding: 2px 6px;
 }
+
+/* 调整整体圆角 */
+.order-item,
+.input-area,
+.mode-selector,
+.order-bar,
+.percentage-up,
+.percentage-down {
+    border-radius: 4px;  /* 减小圆角 */
+}
+
+/* 增大滑块尺寸 */
+.slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-left: -14px;
+    background: #4B89F5;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 增大参数页面的数字 */
+.input-group input[type="number"] {
+    font-size: 16px;  /* 增大字体 */
+    padding: 10px;    /* 增大内边距 */
+    height: 42px;     /* 增大高度 */
+}
+
+/* 滑动模块容器 */
+.slider-container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 0 16px;  /* 添加内边距，防止滑块超出 */
+    box-sizing: border-box;
+}
+
+/* 滑块头部（包含标签和数值） */
+.slider-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;  /* 移除所有外边距 */
+    padding: 0;  /* 移除所有内边距 */
+}
+
+/* 滑块标签样式 */
+.slider-header label {
+    margin: 0;  /* 移除标签的外边距 */
+    padding: 0;  /* 移除标签的内边距 */
+    line-height: 1;  /* 设置行高为1，移除额外的行间距 */
+}
+
+/* 数值显示样式 */
+.slider-header #multiplier-value {
+    margin: 0;  /* 移除数值的外边距 */
+    padding: 0;  /* 移除数值的内边距 */
+    line-height: 1;  /* 设置行高为1，移除额外的行间距 */
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .slider-container {
+        width: 100%;
+        padding: 0;  /* 移内边距 */
+    }
+
+    .slider-header {
+        padding: 0;  /* 确保没有内边距 */
+    }
+
+    .multiplier-group {
+        padding: 0;  /* 移除内边距 */
+    }
+}
+
+/* 倍数显示和标签 */
+.multiplier-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0 16px;
+    /* margin-bottom: 8px; */
+}
+
+/* 倍数值显示 */
+#multiplier-value {
+    color: #4B89F5;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .multiplier-section {
+        margin: 0 6px 24px;  /* 减小左右边距 */
+        padding: 12px 8px;   /* 减小内边距 */
+    }
+    
+    .slider-container {
+        width: 80%;         /* 减小宽度 */
+    }
+}
+
+/* 更小屏幕的适配 */
+@media screen and (max-width: 480px) {
+    .slider-container {
+        width: 75%;        /* 进一步减小宽度 */
+    }
+}
+
+/* 倍数显示和滑块区域 */
+.multiplier-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;  /* 确保不超过屏幕宽度 */
+    margin: 0 auto 20px;  /* 水平居中 */
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    box-sizing: border-box;  /* 包含内边距在总宽度内 */
+}
+
+/* 滑动模块容器 */
+.slider-container {
+    width: 280px;  /* 设置固定宽度 */
+    margin: 0 auto;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+/* 倍数显示和标签 */
+.multiplier-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* 水平居中 */
+    gap: 8px;
+    width: 100%;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .multiplier-section {
+        width: calc(100% - 16px);  /* 留出边距 */
+        padding: 8px;
+    }
+    
+    .slider-container {
+        width: 240px;  /* 小屏幕下减小宽度 */
+    }
+}
+
+/* 更小屏幕的适配 */
+@media screen and (max-width: 480px) {
+    .slider-container {
+        width: 200px;  /* 更小屏幕下进一步减小宽度 */
+    }
+}
+
+/* 滑块组容器 */
+.multiplier-group {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;  /* 使用flex布局 */
+    align-items: center;  /* 垂直居中 */
+    justify-content: center;  /* 水平居中 */
+    gap: 12px;  /* 元素间距 */
+}
+
+/* 滑块头部（包含标签和数值） */
+.slider-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;  /* 默认状态下的间距 */
+}
+
+/* 滑动条包装容器 */
+.slider-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+/* 滑动轨道 */
+.slider-track {
+    width: 90%;
+    height: 4px;
+    background: #e1e1e1;
+    border-radius: 2px;
+    position: relative;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .multiplier-group {
+        display: flex;
+        flex-direction: row;  /* 改为水平布局 */
+        align-items: center;  /* 垂直居中对齐 */
+        justify-content: flex-start;  /* 左齐 */
+        gap: 16px;  /* 增加间距 */
+    }
+
+    .slider-header {
+        flex-shrink: 0;  /* 防止标题被缩 */
+    }
+
+    .slider-wrapper {
+        flex: 1;  /* 占据剩余空间 */
+        min-width: 0;  /* 允许容器缩小 */
+    }
+
+    .slider-track {
+        width: 100%;  /* 占满容器宽度 */
+    }
+
+    .slider-header #multiplier-value {
+        display: none;  /* 隐藏数值显示 */
+    }
+}
+
+/* 标签式浮动提示 */
+.slider-tooltip {
+    position: absolute;
+    top: -45px;
+    left: 0;
+    background: #4B89F5;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;  /* 确保显示在最上层 */
+}
+
+/* 标签小三角 */
+.slider-tooltip:after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #4B89F5;
+}
+
+/* 显示状态 */
+.slider-tooltip.active {
+    opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+    .slider-tooltip {
+        top: -50px;  /* 在移动端离得更远 */
+        padding: 6px 14px;  /* 更大的点击区域 */
+        font-size: 16px;    /* 更大的字体 */
+    }
+}
+
+/* 滑块组容器 */
+.multiplier-group {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .multiplier-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;  /* 水平居中 */
+        gap: 20px;  /* 增加间距 */
+        padding: 12px;
+    }
+
+    .slider-header {
+        flex-shrink: 0;
+        min-width: 70px;  /* 确保文字不会换行 */
+        text-align: right;  /* 文字右对齐 */
+        padding-top: 10px;  /* 向下移动 4px */
+
+    }
+
+    .slider-wrapper {
+        flex: 0 1 auto;  /* 不要占据所有剩余空间 */
+        width: 60%;      /* 设置合适的宽度 */
+    }
+
+    .slider-track {
+        width: 100%;
+    }
+
+    /* 隐藏原有的数值显示 */
+    .slider-header #multiplier-value {
+        display: none;
+    }
+}
+
+/* 更小屏幕的适配 */
+@media screen and (max-width: 480px) {
+    .slider-wrapper {
+        width: 50%;  /* 更小屏幕下稍微缩短滑动条 */
+    }
+}
+
+/* 输入框和快捷按钮的容器 */
+.input-with-shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 快捷按钮组 */
+.amount-shortcuts {
+    display: flex;
+    gap: 4px;
+}
+
+/* 快捷按钮样式 */
+.shortcut-btn {
+    padding: 4px 8px;
+    border: 1px solid #4B89F5;
+    border-radius: 4px;
+    background: white;
+    color: #4B89F5;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.shortcut-btn:hover {
+    background: #4B89F5;
+    color: white;
+}
+
+.shortcut-btn:active {
+    transform: scale(0.95);
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .input-with-shortcuts {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .amount-shortcuts {
+        width: 100%;
+    }
+
+    .shortcut-btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+/* 标签和快捷金额的容器 */
+.label-with-shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;  /* 与输入框的间距 */
+}
+
+/* 快捷金额组 */
+.amount-shortcuts {
+    display: inline-flex;  /* 改用 inline-flex */
+    align-items: center;
+    gap: 12px;
+}
+
+/* 快捷金额样式 */
+.shortcut-amount {
+    color: #4B89F5;
+    font-size: 14px;  /* 修改为统一大小 */
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+}
+
+.shortcut-amount:active {
+    opacity: 0.5;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .label-with-shortcuts {
+        flex-wrap: wrap;  /* 允许在小屏幕上换行 */
+        gap: 8px;
+    }
+
+    .amount-shortcuts {
+        gap: 6px;
+    }
+
+    .shortcut-amount {
+        font-size: 14px;  /* 保持与其他文字一致 */
+    }
+}
+
+/* 标签组容器 */
+.input-label-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    height: 20px;
+}
+
+/* 标签文字统一样式 */
+.input-label-group > span:first-child {
+    font-size: 14px;  /* 修改为统一大小 */
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* 快捷金额样式 */
+.shortcut-amount {
+    font-size: 14px;  /* 修改为统一大小 */
+    color: #4B89F5;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* 价格值 */
+.price-value {
+    width: fit-content;
+    min-width: 85px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;  /* 添加统一大小 */
+}
+
+/* 数字显示 */
+.amount-display {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;  /* 修改为统一大小 */
+    color: black;
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 订单汇总样式 */
+.summary-item {
+    font-size: 14px;  /* 修改为统���大小 */
+    color: #333;
+}
+
+/* 平均价格线样式 */
+.average-price-line .price {
+    color: #ff9900;
+    font-size: 14px;  /* 修改为统一大小 */
+    font-weight: 500;
+    margin-left: 12px;
+}
+
+/* 基础文字大小 */
+.input-label-group > span:first-child,
+.shortcut-amount,
+.price-value,
+.amount-display,
+.summary-item,
+.average-price-line .price,
+#multiplier-value,
+.input-group label {
+    font-size: 14px;
+}
+
+/* 输入框文字 */
+.input-group input[type="number"] {
+    font-size: 16px;
+}
+
+/* 涨跌幅显示 */
+.percentage-up,
+.percentage-down {
+    font-size: 12px;
+}
+
+/* 快捷按钮 */
+.shortcut-btn {
+    font-size: 14px;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .shortcut-amount {
+        font-size: 14px;  /* 保持与其他文字一致 */
+    }
+}
+
+/* 统一所有参数标签的样式 */
+.input-label-group > span:first-child,
+.input-group label,
+.slider-header label {
+    font-size: 14px;
+    font-weight: 400;  /* 统一字体粗细 */
+    color: rgba(0, 0, 0, 0.85);  /* 统一字体颜色 */
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+
+/* 如果有其他标签也需要统一，可以添加到上面的选择器中 */
+
+/* 复制提示浮层样式 */
+.copy-tooltip {
+    position: fixed;
+    padding: 10px 16px;
+    background-color: #D3D3D3 !important;  /* 更亮的灰色 */
+    border: 2px solid white;
+    border-radius: 4px;
+    color: #000;
+    font-size: 16px;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* 动画效果 */
+.copy-tooltip.show {
+    animation: fadeInOut 1.5s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { transform: translateY(10px); }
+    20% { transform: translateY(0); }
+    80% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+.coin-dropdown {
+    position: absolute;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+}
+
+.section-title {
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #666;
+    background: #f5f5f5;
+}
+
+.coin-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.coin-item:hover {
+    background-color: #f5f5f5;
+}
+
+.coin-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.coin-symbol {
+    font-weight: 500;
+}
+
+.coin-price {
+    color: #666;
+}
+
+.no-results {
+    padding: 16px;
+    text-align: center;
+    color: #666;
+}
+
+/* 修改输入框样式以匹配新的用途 */
+#current-price {
+    cursor: pointer;
+    background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23666" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    padding-right: 30px;
+}
+
+/* 统一输入框样式 */
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    width: 100%;
+    height: 42px; /* 明确指定高度 */
+    padding: 8px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.3s;
+    box-sizing: border-box; /* 确保padding不会影响总高度 */
+}
+
+/* 币种选择输入框特殊样式 */
+#current-price {
+    width: 100%;
+    height: 42px; /* 确保与其他输入框高度一致 */
+    cursor: pointer;
+    background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23666" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    padding-right: 30px;
+    box-sizing: border-box;
+}
+
+/* 输入框获得焦点时的样式 */
+.input-group input[type="text"]:focus,
+.input-group input[type="number"]:focus {
+    outline: none;
+    border-color: #4B89F5;
+    box-shadow: 0 0 0 2px rgba(75, 137, 245, 0.2);
+}
+
+/* 确保所有输入组的间距一致 */
+.input-group {
+    margin-bottom: 16px;
+}
+
+/* 标签样式统一 */
+.input-group label {
+    display: block;
+    /* margin-bottom: 8px; */
+    font-size: 14px;
+    color: #333;
+}
+
+/* 错误状态的输入框样式 */
+.input-group input[type="number"].error,
+#price-input.error {
+    border-color: #ff4d4f !important;
+    background-color: #fff2f0;
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* 错误信息样式 */
+#price-error-message {
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-left: 8px;
+    display: none;
+    line-height: 1.5;
+}
+
